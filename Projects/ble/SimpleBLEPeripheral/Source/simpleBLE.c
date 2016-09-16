@@ -588,13 +588,13 @@ static void simpleBLE_NpiSerialCallback( uint8 port, uint8 events )
 
             
             new_time = osal_GetSystemClock(); //当前时间
-            if( (numBytes >= readMaxBytes) 
+            if( (numBytes >= readMaxBytes) //格式和时间符合要求
                 || ( (new_time - old_time) > 20/*ms*/))
             {
                 uint8 sendBytes = 0;
                 uint8 *buffer = osal_mem_alloc(readMaxBytes);
 
-                if(!buffer)
+                if(!buffer) //如果buffer申请未成功
                 {
                     NPI_WriteTransport("FAIL", 4); 
                     return;
@@ -608,9 +608,9 @@ static void simpleBLE_NpiSerialCallback( uint8 port, uint8 events )
                 else
                 {
                     sendBytes = numBytes;
-                }
+                } //令sendBytes为numBytes
 
-                if(!simpleBLE_IfConnected())
+                if(!simpleBLE_IfConnected()) //没有连接上的时候，需要判别AT命令
                 {
                     //numBytes = NpiReadBuffer(buf, sizeof(buf));
                     //NpiClearBuffer();
@@ -635,7 +635,7 @@ static void simpleBLE_NpiSerialCallback( uint8 port, uint8 events )
                         NPI_WriteTransport((uint8*)strTemp, osal_strlen(strTemp)); 
                     }
                 }
-                else
+                else //连接上了的情况
                 {
                     if((GetBleRole() == BLE_ROLE_CENTRAL) && simpleBLEChar6DoWrite && simpleBLECentralCanSend )             
                     {
@@ -669,10 +669,10 @@ static void simpleBLE_NpiSerialCallback( uint8 port, uint8 events )
                 }
 
                 old_time = new_time;
-                old_time_data_len = numBytes - sendBytes;
+                old_time_data_len = numBytes - sendBytes; //交换一下old和new时间
 
 
-                osal_mem_free(buffer);
+                osal_mem_free(buffer); //向系统说明不用buffer了
             }                
         }    
     }
