@@ -637,7 +637,7 @@ static void simpleBLE_NpiSerialCallback( uint8 port, uint8 events )
                 }
                 else //连接上了的情况
                 {
-                    if((GetBleRole() == BLE_ROLE_CENTRAL) && simpleBLEChar6DoWrite && simpleBLECentralCanSend )             
+                    if((GetBleRole() == BLE_ROLE_CENTRAL) && simpleBLEChar6DoWrite && simpleBLECentralCanSend ) //主机的情况            
                     {
                         char strTemp[24];
 
@@ -655,7 +655,7 @@ static void simpleBLE_NpiSerialCallback( uint8 port, uint8 events )
                             simpleBLE_UartDataMain(buffer,sendBytes);
                         }
                     }
-                    else if((GetBleRole() == BLE_ROLE_PERIPHERAL) && simpleBLEChar6DoWrite2)                    
+                    else if((GetBleRole() == BLE_ROLE_PERIPHERAL) && simpleBLEChar6DoWrite2) //从机模式下                   
                     {
                         //LCD_WRITE_STRING_VALUE( "sendBytes=", sendBytes, 10, HAL_LCD_LINE_1 );
                         NPI_ReadTransport(buffer,sendBytes);    //释放串口数据    
@@ -678,7 +678,7 @@ static void simpleBLE_NpiSerialCallback( uint8 port, uint8 events )
     }
 }
 
-void simpleBLE_UartDataMain(uint8 *buf, uint8 numBytes)
+void simpleBLE_UartDataMain(uint8 *buf, uint8 numBytes) //这是主机或从机模式下，串口传过来信息时用的接口函数
 {
     if(GetBleRole() == BLE_ROLE_CENTRAL )//主机
     {          
@@ -724,6 +724,7 @@ void simpleBLE_UartDataMain(uint8 *buf, uint8 numBytes)
         {
             LCD_WRITE_STRING_VALUE( "simpleBLEChar6DoWrite=", simpleBLEChar6DoWrite2, 10, HAL_LCD_LINE_1 );
         }
+        //Add my code here
     }
 }
 #endif
@@ -901,7 +902,7 @@ bool simpleBLE_AT_CMD_Handle(uint8 *pBuffer, uint16 length)
             sprintf(strTemp, "OK+Set:%s\r\n", sys_config.name);
             NPI_WriteTransport((uint8*)strTemp, osal_strlen(strTemp)); 
 
-            restart = TRUE;  //直接重启即可
+            restart = TRUE;  //直接重启即可 restart
             break;
         }        
     }    
@@ -1129,7 +1130,7 @@ bool simpleBLE_AT_CMD_Handle(uint8 *pBuffer, uint16 length)
         sprintf(strTemp, "OK+RSSI:%d\r\n", sys_config.rssi);
         NPI_WriteTransport((uint8*)strTemp, osal_strlen(strTemp));        
     }
-    // 20、  改变模块发射信号强度
+    // 20、  改变模块发射信号强度  set strength
     else if((length == 10) && str_cmp(pBuffer, "AT+TXPW", 7))
     {
         /*

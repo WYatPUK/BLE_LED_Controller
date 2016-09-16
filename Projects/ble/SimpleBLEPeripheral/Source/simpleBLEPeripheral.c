@@ -789,7 +789,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
           HalLcdWriteString( "Connected",  HAL_LCD_LINE_3 );
         #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
         LedSetState(HAL_LED_MODE_OFF);
-        NPI_WriteTransport("Connected\r\n", 11);
+        NPI_WriteTransport("Connected\r\n", 11); //UART "connected"
       }
       break;
 
@@ -880,11 +880,11 @@ static void simpleProfileChangeCB( uint8 paramID )
 
       break;
     
-    case SIMPLEPROFILE_CHAR6:
+    case SIMPLEPROFILE_CHAR6: //这个应该是平时用的那个函数
       SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR6, newChar6Value, &returnBytes );
       if(returnBytes > 0)
       {
-        NPI_WriteTransport(newChar6Value,returnBytes);
+        NPI_WriteTransport(newChar6Value,returnBytes); // 发送改变的那些值
       }
 
       break;
