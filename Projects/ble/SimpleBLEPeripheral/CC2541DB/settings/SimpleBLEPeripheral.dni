@@ -20,15 +20,15 @@ ByteLimit=50
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
 [Breakpoints]
 Count=0
 [ChipconEmu]
 Stop timers on halt=1
 Leave target running=1
-[Log file]
-LoggingEnabled=_ 0
-LogFile=_ ""
-Category=_ 0
 [Aliases]
 A0=_ "C:\Texas Instruments\BLE-132-ZCYT\Components\osal\common\OSAL_PwrMgr.c" ""
 A1=_ "C:\Texas Instruments\BLE-132-ZCYT\Projects\ble\Profiles\Roles\gap.c" ""
